@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instant Quote Graphic Maker</title>
+  <!-- Clean CSS with full touch & gesture optimization -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@400;600;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      font-family: 'Padauk', 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Styling */
+    header {
+      background-color: #111827;
+      border-bottom: 1px solid #1f2937;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .logo-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fbbf24;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #0b0f19;
+      font-weight: bold;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    }
+
+    .download-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Main Container Grid */
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      main {
+        grid-template-columns: 430px 1fr;
+      }
+    }
+
+    /* Control Panel */
+    .controls-card {
+      background-color: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #9ca3af;
+      font-weight: 600;
+    }
+
+    input[type="text"], textarea, select {
+      background-color: #030712;
+      border: 1px solid #374151;
+      color: #f3f4f6;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: #f59e0b;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .preset-btn {
+      height: 48px;
+      border-radius: 6px;
+      border: 1px solid #374151;
+      cursor: pointer;
+      transition: transform 0.1s;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .preset-btn:hover {
+      transform: scale(1.03);
+      border-color: #f59e0b;
+    }
+
+    /* Custom Photo Upload */
+    .upload-box {
+      background-color: #030712;
+      border: 2px dashed #374151;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .upload-box:hover {
+      border-color: #f59e0b;
+      background-color: #0f172a;
+    }
+
+    .upload-box span {
+      font-size: 12px;
+      color: #fbbf24;
+      font-weight: bold;
+    }
+
+    .upload-box p {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .row-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .color-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .color-picker-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: #030712;
+      border: 1px solid #374151;
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .color-picker-box input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 100%;
+      height: 30px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .color-picker-box label {
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .preview-card {
+      background-color: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+      position: relative;
+    }
+
+    .canvas-container {
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      background-color: #030712;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      touch-action: none;
+      cursor: grab;
+    }
+
+    canvas:active {
+      cursor: grabbing;
+    }
+
+    /* Interactive Status Badge */
+    .gesture-hint {
+      background-color: rgba(17, 24, 39, 0.9);
+      border: 1px solid #374151;
+      color: #fbbf24;
+      font-size: 12px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+
+    .gesture-hint.active-quote {
+      border-color: #f59e0b;
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fef3c7;
+    }
+
+    .gesture-hint.active-image {
+      border-color: #3b82f6;
+      background-color: rgba(59, 130, 246, 0.15);
+      color: #dbeafe;
+    }
+
+    /* Reset Button */
+    .reset-btn {
+      background: transparent;
+      border: 1px solid #374151;
+      color: #9ca3af;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+
+    .reset-btn:hover {
+      border-color: #f59e0b;
+      color: #f3f4f6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">“</div>
+      <div class="logo-title">Quote Graphic Maker</div>
+    </div>
+    <button class="download-btn" id="downloadBtn">Graphic ဒေါင်းလုဒ်ရယူမည်</button>
+  </header>
+
+  <!-- Main Application Body -->
+  <main>
+    <!-- Control Form Panel -->
+    <div class="controls-card">
+      <div class="form-group">
+        <label>အဓိက မြန်မာ စာသား (Myanmar Quote)</label>
+        <textarea id="myText" rows="3">ဘဝမှာ အောင်မြင်ဖို့အတွက် အခက်အခဲတွေကို ကျော်ဖြတ်နိုင်တဲ့ သတ္တိရှိဖို့ လိုအပ်တယ်။</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>အင်္ဂလိပ် မူရင်း စာသား (English Quote)</label>
+        <textarea id="enText" rows="2">To succeed in life, you need the courage to overcome difficulties.</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>ပြောကြားသူ ပုဂ္ဂိုလ် (Author Name)</label>
+        <input type="text" id="authorText" value="Steve Jobs">
+      </div>
+
+      <!-- Aspect Ratio Selection -->
+      <div class="form-group">
+        <label>ပုံဆိုဒ် / Aspect Ratio ရွေးချယ်ရန်</label>
+        <select id="aspectRatioSelect">
+          <option value="1:1" selected>1:1 (Square - FB/IG Post)</option>
+          <option value="4:5">4:5 (Portrait - FB/IG Feed)</option>
+          <option value="9:16">9:16 (Story / Reels / TikTok)</option>
+          <option value="16:9">16:9 (Landscape / Cover)</option>
+          <option value="4:3">4:3 (Classic Banner)</option>
+        </select>
+      </div>
+
+      <!-- Custom Image Upload Section -->
+      <div class="form-group">
+        <label>မိမိနှစ်သက်ရာ ဓာတ်ပုံ တင်သွင်းရန် (Custom Photo)</label>
+        <label for="imageLoader" class="upload-box">
+          <span>📷 ဓာတ်ပုံ ရွေးချယ်ရန် နှိပ်ပါ</span>
+          <p>ဖုန်း သို့မဟုတ် ကွန်ပျူတာထဲမှ ပုံကို ရွေးပါ</p>
+        </label>
+        <input type="file" id="imageLoader" accept="image/*">
+      </div>
+
+      <!-- Preset Themes Section -->
+      <div class="form-group">
+        <label>အဆင်သင့် အရောင်နှင့် HD ဓာတ်ပုံ ဒီဇိုင်းများ (Presets)</label>
+        <div class="preset-grid">
+          <!-- Color Gradients -->
+          <button class="preset-btn" style="background: linear-gradient(135deg, #0f172a, #1e1b4b);" data-type="gradient" data-bg1="#0f172a" data-bg2="#1e1b4b" data-accent="#fbbf24" data-text="#ffffff" title="Royal Dark"></button>
+          <button class="preset-btn" style="background: linear-gradient(135deg, #064e3b, #022c22);" data-type="gradient" data-bg1="#064e3b" data-bg2="#022c22" data-accent="#34d399" data-text="#ffffff" title="Forest Green"></button>
+          <button class="preset-btn" style="background: linear-gradient(135deg, #4c0519, #1c1917);" data-type="gradient" data-bg1="#4c0519" data-bg2="#1c1917" data-accent="#fb923c" data-text="#ffffff" title="Sunset Glow"></button>
+          
+          <!-- Sample HD Photos -->
+          <button class="preset-btn" style="background-image: url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=400&auto=format&fit=crop');" data-type="image" data-src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=1200&auto=format&fit=crop" data-accent="#38bdf8" data-text="#ffffff" title="Galaxy"></button>
+          <button class="preset-btn" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400&auto=format&fit=crop');" data-type="image" data-src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop" data-accent="#fcd34d" data-text="#ffffff" title="Mountain"></button>
+          <button class="preset-btn" style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=400&auto=format&fit=crop');" data-type="image" data-src="https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop" data-accent="#4ade80" data-text="#ffffff" title="Forest"></button>
+        </div>
+      </div>
+
+      <!-- Overlay Darkness Control for Images -->
+      <div class="form-group" id="overlayGroup">
+        <label>ဓာတ်ပုံ အမှောင်ထု (Image Overlay Darkness)</label>
+        <input type="range" id="overlayRange" min="0" max="0.9" step="0.05" value="0.55">
+      </div>
+
+      <!-- Text Colors Pickers -->
+      <div class="form-group">
+        <label>စာသားနှင့် Highlight အရောင်များ ရွေးချယ်ရန်</label>
+        <div class="color-row">
+          <div class="color-picker-box">
+            <label>မြန်မာစာသား</label>
+            <input type="color" id="myTextColor" value="#ffffff">
+          </div>
+          <div class="color-picker-box">
+            <label>အင်္ဂလိပ်စာသား</label>
+            <input type="color" id="enTextColor" value="#e2e8f0">
+          </div>
+          <div class="color-picker-box">
+            <label>Highlight အရောင်</label>
+            <input type="color" id="accentColor" value="#fbbf24">
+          </div>
+        </div>
+      </div>
+
+      <div class="row-group">
+        <div class="form-group">
+          <label>Font Size</label>
+          <select id="fontSizeSelect">
+            <option value="small">အသေး (Small)</option>
+            <option value="medium" selected>အလတ် (Medium)</option>
+            <option value="large">အကြီး (Large)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>စာသား တည်နေရာ</label>
+          <select id="alignSelect">
+            <option value="center" selected>Center</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Preview Display -->
+    <div class="preview-card">
+      <div class="gesture-hint" id="gestureHint">
+        <span id="hintIcon">👆</span> <span id="hintText">လက်ဖြင့် တိုက်ရိုက် ဖိဆွဲပါ (Quote သို့မဟုတ် ဓာတ်ပုံ)</span>
+      </div>
+      <div class="canvas-container">
+        <canvas id="quoteCanvas" width="1080" height="1080"></canvas>
+      </div>
+      <button class="reset-btn" id="resetPosBtn">🔄 နေရာ/Zoom မူလအတိုင်း ပြန်ပြင်မည်</button>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('quoteCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // DOM Elements
+    const myTextInput = document.getElementById('myText');
+    const enTextInput = document.getElementById('enText');
+    const authorTextInput = document.getElementById('authorText');
+    const aspectRatioSelect = document.getElementById('aspectRatioSelect');
+    const fontSizeSelect = document.getElementById('fontSizeSelect');
+    const alignSelect = document.getElementById('alignSelect');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const imageLoader = document.getElementById('imageLoader');
+    const overlayRange = document.getElementById('overlayRange');
+    
+    const myTextColorInput = document.getElementById('myTextColor');
+    const enTextColorInput = document.getElementById('enTextColor');
+    const accentColorInput = document.getElementById('accentColor');
+    
+    const gestureHint = document.getElementById('gestureHint');
+    const hintIcon = document.getElementById('hintIcon');
+    const hintText = document.getElementById('hintText');
+    const resetPosBtn = document.getElementById('resetPosBtn');
+
+    // Transform state (controlled directly via Touch & Mouse gestures)
+    let transformState = {
+      imgScale: 1.0,
+      imgOffsetX: 0,
+      imgOffsetY: 0,
+      quotePosX: 0,
+      quotePosY: 0
+    };
+
+    // Theme state
+    let currentTheme = {
+      type: "gradient",
+      bg1: "#0f172a",
+      bg2: "#1e1b4b",
+      imgElement: null
+    };
+
+    // Bounding Box for Quote text (calculated during render)
+    let quoteBounds = { left: 0, right: 0, top: 0, bottom: 0 };
+    let activeSelection = null; // 'quote', 'image', or null
+
+    // Helper: Wrap text lines cleanly
+    function getWrappedLines(context, text, maxWidth) {
+      if (!text || !text.trim()) return [];
+      const words = text.trim().split(' ');
+      let lines = [];
+      let line = '';
+
+      for (let n = 0; n < words.length; n++) {
+        let testLine = line + words[n] + ' ';
+        let metrics = context.measureText(testLine);
+        if (metrics.width > maxWidth && n > 0) {
+          lines.push(line.trim());
+          line = words[n] + ' ';
+        } else {
+          line = testLine;
+        }
+      }
+      lines.push(line.trim());
+      return lines;
+    }
+
+    // Render Canvas
+    function renderCanvas() {
+      // Set aspect ratio dimensions
+      const ratioVal = aspectRatioSelect ? aspectRatioSelect.value : "1:1";
+      if (ratioVal === "1:1") { canvas.width = 1080; canvas.height = 1080; }
+      else if (ratioVal === "4:5") { canvas.width = 1080; canvas.height = 1350; }
+      else if (ratioVal === "9:16") { canvas.width = 1080; canvas.height = 1920; }
+      else if (ratioVal === "16:9") { canvas.width = 1200; canvas.height = 675; }
+      else if (ratioVal === "4:3") { canvas.width = 1024; canvas.height = 768; }
+
+      const width = canvas.width;
+      const height = canvas.height;
+
+      // 1. Render Background (Photo or Gradient)
+      if (currentTheme.type === "image" && currentTheme.imgElement) {
+        const img = currentTheme.imgElement;
+        const zoom = transformState.imgScale;
+        const offsetX = transformState.imgOffsetX;
+        const offsetY = transformState.imgOffsetY;
+
+        const hRatio = (width / img.width) * zoom;
+        const vRatio = (height / img.height) * zoom;
+        const ratio = Math.max(hRatio, vRatio);
+
+        const drawW = img.width * ratio;
+        const drawH = img.height * ratio;
+
+        const centerShift_x = ((width - drawW) / 2) + offsetX;
+        const centerShift_y = ((height - drawH) / 2) + offsetY;
+
+        ctx.drawImage(img, 0, 0, img.width, img.height,
+                           centerShift_x, centerShift_y, drawW, drawH);
+
+        // Dark Overlay Filter
+        const overlayOpacity = parseFloat(overlayRange.value);
+        ctx.fillStyle = `rgba(0, 0, 0, ${overlayOpacity})`;
+        ctx.fillRect(0, 0, width, height);
+
+      } else {
+        // Color Gradient Background
+        const grad = ctx.createLinearGradient(0, 0, width, height);
+        grad.addColorStop(0, currentTheme.bg1);
+        grad.addColorStop(1, currentTheme.bg2);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+      }
+
+      // 2. Setup Padding & Position
+      const align = alignSelect.value;
+      const margin = Math.round(width * 0.1); // 10% margin
+      const maxWidth = width - (margin * 2);
+
+      const qX = transformState.quotePosX;
+      const qY = transformState.quotePosY;
+
+      let posX = (width / 2) + qX;
+      if (align === 'left') posX = margin + qX;
+      if (align === 'right') posX = width - margin + qX;
+
+      // 3. Dynamic Font Sizes
+      const sizeMode = fontSizeSelect.value;
+      let myFontSize = Math.round(width * 0.038);
+      let enFontSize = Math.round(width * 0.026);
+
+      if (sizeMode === 'small') { myFontSize = Math.round(width * 0.03); enFontSize = Math.round(width * 0.02); }
+      if (sizeMode === 'large') { myFontSize = Math.round(width * 0.046); enFontSize = Math.round(width * 0.032); }
+
+      const myLineGap = myFontSize * 1.5;
+      const enLineGap = enFontSize * 1.5;
+
+      // Wrap text
+      ctx.font = `bold ${myFontSize}px "Padauk", sans-serif`;
+      const myLines = getWrappedLines(ctx, myTextInput.value, maxWidth);
+
+      ctx.font = `italic ${enFontSize}px "Playfair Display", serif`;
+      const enLines = getWrappedLines(ctx, enTextInput.value, maxWidth);
+
+      // Total content height
+      const quoteIconHeight = myFontSize * 1.2;
+      const myTextHeight = myLines.length * myLineGap;
+      const dividerHeight = enLines.length > 0 ? 35 : 0;
+      const enTextHeight = enLines.length * enLineGap;
+      const authorHeight = authorTextInput.value.trim() !== "" ? 50 : 0;
+
+      const totalContentHeight = quoteIconHeight + myTextHeight + dividerHeight + enTextHeight + authorHeight;
+
+      let startY = ((height - totalContentHeight) / 2) + qY;
+
+      // Calculate Bounding Box for touch collision
+      let bLeft = posX - (maxWidth / 2);
+      let bRight = posX + (maxWidth / 2);
+      if (align === 'left') { bLeft = posX; bRight = posX + maxWidth; }
+      if (align === 'right') { bLeft = posX - maxWidth; bRight = posX; }
+
+      quoteBounds = {
+        left: bLeft - 30,
+        right: bRight + 30,
+        top: startY - 30,
+        bottom: startY + totalContentHeight + 30
+      };
+
+      // 4. Render Quote Opening Mark
+      ctx.fillStyle = accentColorInput.value;
+      ctx.font = `${Math.round(myFontSize * 2.2)}px "Playfair Display", serif`;
+      ctx.textAlign = align;
+      let currentY = startY + (myFontSize * 0.8);
+      ctx.fillText('“', posX, currentY);
+
+      // 5. Render Myanmar Quote
+      currentY += myFontSize * 0.6;
+      ctx.fillStyle = myTextColorInput.value;
+      ctx.font = `bold ${myFontSize}px "Padauk", sans-serif`;
+      for (let line of myLines) {
+        ctx.textAlign = align;
+        ctx.fillText(line, posX, currentY);
+        currentY += myLineGap;
+      }
+
+      // 6. Render Divider & English Quote
+      if (enLines.length > 0) {
+        currentY += 5;
+        ctx.fillStyle = accentColorInput.value;
+        let lineX = posX - 30;
+        if (align === 'left') lineX = posX;
+        if (align === 'right') lineX = posX - 60;
+        if (align === 'center') lineX = posX - 30;
+        ctx.fillRect(lineX, currentY, 60, 3);
+        currentY += 35;
+
+        ctx.fillStyle = enTextColorInput.value;
+        ctx.font = `italic ${enFontSize}px "Playfair Display", serif`;
+        for (let line of enLines) {
+          ctx.textAlign = align;
+          ctx.fillText(line, posX, currentY);
+          currentY += enLineGap;
+        }
+      }
+
+      // 7. Render Author Name
+      if (authorTextInput.value.trim() !== "") {
+        currentY += 25;
+        ctx.fillStyle = accentColorInput.value;
+        ctx.font = `bold ${Math.round(myFontSize * 0.75)}px "Padauk", sans-serif`;
+        ctx.textAlign = align;
+        ctx.fillText(`— ${authorTextInput.value}`, posX, currentY);
+      }
+
+      // 8. Draw Active Drag Selection Outline (when touched)
+      if (activeSelection === 'quote') {
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 8]);
+        ctx.strokeRect(
+          quoteBounds.left,
+          quoteBounds.top,
+          quoteBounds.right - quoteBounds.left,
+          quoteBounds.bottom - quoteBounds.top
+        );
+        ctx.setLineDash([]);
+      } else if (activeSelection === 'image') {
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 8]);
+        ctx.strokeRect(10, 10, width - 20, height - 20);
+        ctx.setLineDash([]);
+      }
+    }
+
+    // --- DIRECT TOUCH & DRAG SYSTEM ---
+    let isDragging = false;
+    let dragTarget = null; // 'quote', 'image', 'zoom'
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    let initialPinchDist = 0;
+    let initialScale = 1;
+
+    // Convert screen pointer coordinates to Canvas scale
+    function getCanvasCoords(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
+      };
+    }
+
+    function getTouchDistance(touches) {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.hypot(dx, dy);
+    }
+
+    function updateHint(mode) {
+      if (mode === 'quote') {
+        gestureHint.className = 'gesture-hint active-quote';
+        hintIcon.innerText = '✍️';
+        hintText.innerText = 'Quote စာသားကို နေရာရွှေ့နေပါသည်...';
+      } else if (mode === 'image') {
+        gestureHint.className = 'gesture-hint active-image';
+        hintIcon.innerText = '🖼️';
+        hintText.innerText = 'ဓာတ်ပုံကို ရွှေ့/Zoom ဆွဲနေပါသည်...';
+      } else {
+        gestureHint.className = 'gesture-hint';
+        hintIcon.innerText = '👆';
+        hintText.innerText = 'လက်ဖြင့် တိုက်ရိုက် ဖိဆွဲပါ (Quote သို့မဟုတ် ဓာတ်ပုံ)';
+      }
+    }
+
+    // Touch Event Handlers
+    function handleTouchStart(e) {
+      e.preventDefault();
+      if (e.touches.length === 1) {
+        isDragging = true;
+        const touch = e.touches[0];
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+
+        const coords = getCanvasCoords(touch.clientX, touch.clientY);
+
+        // Hit-test Quote bounding box
+        if (coords.x >= quoteBounds.left && coords.x <= quoteBounds.right &&
+            coords.y >= quoteBounds.top && coords.y <= quoteBounds.bottom) {
+          dragTarget = 'quote';
+          activeSelection = 'quote';
+        } else {
+          dragTarget = 'image';
+          activeSelection = 'image';
+        }
+        updateHint(activeSelection);
+        renderCanvas();
+      } else if (e.touches.length === 2) {
+        // Pinch zoom mode
+        isDragging = true;
+        dragTarget = 'zoom';
+        activeSelection = 'image';
+        initialPinchDist = getTouchDistance(e.touches);
+        initialScale = transformState.imgScale;
+        updateHint('image');
+        renderCanvas();
+      }
+    }
+
+    function handleTouchMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+
+      if (e.touches.length === 1 && dragTarget) {
+        const touch = e.touches[0];
+        const deltaX = (touch.clientX - lastTouchX) * scaleX;
+        const deltaY = (touch.clientY - lastTouchY) * scaleY;
+
+        if (dragTarget === 'quote') {
+          transformState.quotePosX = Math.max(-600, Math.min(600, transformState.quotePosX + deltaX));
+          transformState.quotePosY = Math.max(-800, Math.min(800, transformState.quotePosY + deltaY));
+        } else if (dragTarget === 'image') {
+          transformState.imgOffsetX = Math.max(-1000, Math.min(1000, transformState.imgOffsetX + deltaX));
+          transformState.imgOffsetY = Math.max(-1000, Math.min(1000, transformState.imgOffsetY + deltaY));
+        }
+
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+        renderCanvas();
+      } else if (e.touches.length === 2 && dragTarget === 'zoom') {
+        const curDist = getTouchDistance(e.touches);
+        if (initialPinchDist > 0) {
+          const zoomFactor = curDist / initialPinchDist;
+          transformState.imgScale = Math.max(1, Math.min(4.0, initialScale * zoomFactor));
+          renderCanvas();
+        }
+      }
+    }
+
+    function handleTouchEnd(e) {
+      if (e.touches.length === 0) {
+        isDragging = false;
+        dragTarget = null;
+        activeSelection = null;
+        updateHint(null);
+        renderCanvas();
+      } else if (e.touches.length === 1) {
+        // Fallback to single touch drag
+        dragTarget = 'image';
+        lastTouchX = e.touches[0].clientX;
+        lastTouchY = e.touches[0].clientY;
+      }
+    }
+
+    // Attach Native Touch Listeners with passive: false for smooth preventDefault
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+    canvas.addEventListener('touchend', handleTouchEnd);
+    canvas.addEventListener('touchcancel', handleTouchEnd);
+
+    // Mouse Event Handlers (Desktop compatibility)
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastTouchX = e.clientX;
+      lastTouchY = e.clientY;
+
+      const coords = getCanvasCoords(e.clientX, e.clientY);
+      if (coords.x >= quoteBounds.left && coords.x <= quoteBounds.right &&
+          coords.y >= quoteBounds.top && coords.y <= quoteBounds.bottom) {
+        dragTarget = 'quote';
+        activeSelection = 'quote';
+      } else {
+        dragTarget = 'image';
+        activeSelection = 'image';
+      }
+      updateHint(activeSelection);
+      renderCanvas();
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDragging) {
+        // Dynamic cursor on hover
+        const coords = getCanvasCoords(e.clientX, e.clientY);
+        if (coords.x >= quoteBounds.left && coords.x <= quoteBounds.right &&
+            coords.y >= quoteBounds.top && coords.y <= quoteBounds.bottom) {
+          canvas.style.cursor = 'move';
+        } else {
+          canvas.style.cursor = 'grab';
+        }
+        return;
+      }
+
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+
+      const deltaX = (e.clientX - lastTouchX) * scaleX;
+      const deltaY = (e.clientY - lastTouchY) * scaleY;
+
+      if (dragTarget === 'quote') {
+        transformState.quotePosX = Math.max(-600, Math.min(600, transformState.quotePosX + deltaX));
+        transformState.quotePosY = Math.max(-800, Math.min(800, transformState.quotePosY + deltaY));
+      } else if (dragTarget === 'image') {
+        transformState.imgOffsetX = Math.max(-1000, Math.min(1000, transformState.imgOffsetX + deltaX));
+        transformState.imgOffsetY = Math.max(-1000, Math.min(1000, transformState.imgOffsetY + deltaY));
+      }
+
+      lastTouchX = e.clientX;
+      lastTouchY = e.clientY;
+      renderCanvas();
+    });
+
+    const stopMouseDrag = () => {
+      if (isDragging) {
+        isDragging = false;
+        dragTarget = null;
+        activeSelection = null;
+        updateHint(null);
+        renderCanvas();
+      }
+    };
+
+    canvas.addEventListener('mouseup', stopMouseDrag);
+    canvas.addEventListener('mouseleave', stopMouseDrag);
+
+    // Mouse Wheel Zoom
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      let zoomDelta = e.deltaY < 0 ? 0.08 : -0.08;
+      transformState.imgScale = Math.max(1, Math.min(4.0, transformState.imgScale + zoomDelta));
+      renderCanvas();
+    }, { passive: false });
+
+    // Bind Form Controls
+    myTextInput.addEventListener('input', renderCanvas);
+    enTextInput.addEventListener('input', renderCanvas);
+    authorTextInput.addEventListener('input', renderCanvas);
+    aspectRatioSelect.addEventListener('change', renderCanvas);
+    fontSizeSelect.addEventListener('change', renderCanvas);
+    alignSelect.addEventListener('change', renderCanvas);
+    overlayRange.addEventListener('input', renderCanvas);
+
+    myTextColorInput.addEventListener('input', renderCanvas);
+    enTextColorInput.addEventListener('input', renderCanvas);
+    accentColorInput.addEventListener('input', renderCanvas);
+
+    // Reset Positions
+    resetPosBtn.addEventListener('click', () => {
+      transformState.imgScale = 1.0;
+      transformState.imgOffsetX = 0;
+      transformState.imgOffsetY = 0;
+      transformState.quotePosX = 0;
+      transformState.quotePosY = 0;
+      renderCanvas();
+    });
+
+    // Custom Photo Upload
+    imageLoader.addEventListener('change', (e) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          currentTheme.type = "image";
+          currentTheme.imgElement = img;
+          renderCanvas();
+        };
+        img.src = event.target.result;
+      };
+      if (e.target.files[0]) {
+        reader.readAsDataURL(e.target.files[0]);
+      }
+    });
+
+    // Preset Buttons Click
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-type');
+        currentTheme.type = type;
+        const accent = btn.getAttribute('data-accent');
+        const text = btn.getAttribute('data-text');
+
+        if (accent) accentColorInput.value = accent;
+        if (text) myTextColorInput.value = text;
+        enTextColorInput.value = "#e2e8f0";
+
+        if (type === 'gradient') {
+          currentTheme.bg1 = btn.getAttribute('data-bg1');
+          currentTheme.bg2 = btn.getAttribute('data-bg2');
+          renderCanvas();
+        } else if (type === 'image') {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            currentTheme.imgElement = img;
+            renderCanvas();
+          };
+          img.src = btn.getAttribute('data-src');
+        }
+      });
+    });
+
+    // Download Image
+    downloadBtn.addEventListener('click', () => {
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `Quote_Graphic_${Date.now()}.png`;
+      link.href = dataURL;
+      link.click();
+    });
+
+    // Initial Load
+    window.onload = () => {
+      renderCanvas();
+    };
+  </script>
+</body>
+</html>
